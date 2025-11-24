@@ -27,7 +27,7 @@ export default function LoginForm({onLogin}) {
     const fetchLogin = async () => {
       const options = {
         method: "POST",
-        url: "https://festivals-api.vercel.app/login",
+        url: "https://doctors-api.vercel.app/login",
         data: form
       };
 

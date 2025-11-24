@@ -24,13 +24,13 @@ import {
 // } from "@/components/ui/card";
 
 export default function Index() {
-  const [festivals, setFestivals] = useState([]);
+  const [doctors, setFestivals] = useState([]);
 
   useEffect(() => {
     const fetchFestivals = async () => {
       const options = {
         method: "GET",
-        url: "https://festivals-api.vercel.app/festivals",
+        url: "https://doctors-api.vercel.app/doctors",
       };
 
       try {
@@ -45,7 +45,7 @@ export default function Index() {
     fetchFestivals();
   }, []);
 
-  // const festivalCards = festivals.map((festival) => {
+  // const festivalCards = doctors.map((festival) => {
   //   return (
   //     <Card key={festival.id}>
   //       <CardHeader>
@@ -60,7 +60,7 @@ export default function Index() {
   //         <Button
   //           asChild
   //           variant='outline'
-  //         ><Link size='md' to={`/festivals/${festival.id}`}>View</Link></Button>
+  //         ><Link size='md' to={`/doctors/${festival.id}`}>View</Link></Button>
   //       </CardFooter>
   //     </Card>
   //   );
@@ -72,7 +72,7 @@ export default function Index() {
         asChild
         variant='outline'
         className='mb-4 mr-auto block'
-      ><Link size='sm' to={`/festivals/create`}>Create New Festival</Link>
+      ><Link size='sm' to={`/doctors/create`}>Create New Festival</Link>
       </Button>
 
 
@@ -87,7 +87,7 @@ export default function Index() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {festivals.map((festival) => (
+        {doctors.map((festival) => (
           <TableRow key={festival.id}>
             <TableCell>{festival.title}</TableCell>
             <TableCell>{festival.city}</TableCell>

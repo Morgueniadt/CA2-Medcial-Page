@@ -26,7 +26,7 @@ export default function Create() {
 
         const options = {
             method: "POST",
-            url: `https://festivals-api.vercel.app/festivals`,
+            url: `https://doctors-api.vercel.app/doctors`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -36,7 +36,7 @@ export default function Create() {
         try {
             let response = await axios.request(options);
             console.log(response.data);
-            navigate('/festivals');
+            navigate('/doctors');
         } catch (err) {
             console.log(err);
         }

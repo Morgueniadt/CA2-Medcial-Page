@@ -20,7 +20,7 @@ export default function Edit() {
     const fetchFestival = async () => {
       const options = {
         method: "GET",
-        url: `https://festivals-api.vercel.app/festivals/${id}`,
+        url: `https://doctors-api.vercel.app/doctors/${id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,7 +60,7 @@ export default function Edit() {
 
     const options = {
       method: "PATCH",
-      url: `https://festivals-api.vercel.app/festivals/${id}`,
+      url: `https://doctors-api.vercel.app/doctors/${id}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -70,7 +70,7 @@ export default function Edit() {
     try {
       let response = await axios.request(options);
       console.log(response.data);
-      navigate("/festivals");
+      navigate("/doctors");
     } catch (err) {
       console.log(err);
     }

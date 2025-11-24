@@ -9,10 +9,10 @@ import { SiteHeader } from '@/components/site-header';
 import Navbar from '@/components/Navbar';
 import Home from '@/pages/Home';
 
-import FestivalsIndex from '@/pages/festivals/Index';
-import FestivalsShow from '@/pages/festivals/Show';
-import FestivalsCreate from '@/pages/festivals/Create';
-import FestivalsEdit from '@/pages/festivals/Edit';
+import FestivalsIndex from '@/pages/doctors/Index';
+import FestivalsShow from '@/pages/doctors/Show';
+import FestivalsCreate from '@/pages/doctors/Create';
+import FestivalsEdit from '@/pages/doctors/Edit';
 
 
 export default function App() {
@@ -45,8 +45,8 @@ export default function App() {
   //       <Routes>
   //         <Route path='/' element={<Home onLogin={onLogin} loggedIn={loggedIn} />} />
 
-  //         <Route path="/festivals" element={<FestivalsIndex />} />
-  //         <Route path="/festivals/:id" element={<FestivalsShow loggedIn={loggedIn} />} />
+  //         <Route path="/doctors" element={<FestivalsIndex />} />
+  //         <Route path="/doctors/:id" element={<FestivalsShow loggedIn={loggedIn} />} />
 
   //       </Routes>
   //     </Router>
@@ -76,16 +76,16 @@ export default function App() {
                     element={<Home onLogin={onLogin} loggedIn={loggedIn} />}
                   />
 
-                  <Route path="/festivals" element={<FestivalsIndex />} />
+                  <Route path="/doctors" element={<FestivalsIndex />} />
                   <Route
-                    path="/festivals/:id"
+                    path="/doctors/:id"
                     element={<FestivalsShow loggedIn={loggedIn} />}
                   />
                   <Route
-                    path="/festivals/:id/edit"
+                    path="/doctors/:id/edit"
                     element={<FestivalsEdit />}
                   />
-                  <Route path="/festivals/create" element={<FestivalsCreate />} />
+                  <Route path="/doctors/create" element={<FestivalsCreate />} />
                 </Routes>
               </div>
             </div>

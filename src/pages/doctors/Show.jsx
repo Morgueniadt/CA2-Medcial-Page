@@ -12,7 +12,7 @@ export default function Show() {
     const fetchFestival = async () => {
       const options = {
         method: "GET",
-        url: `https://festivals-api.vercel.app/festivals/${id}`,
+        url: `https://doctors-api.vercel.app/doctors/${id}`,
         headers: {
             Authorization: `Bearer ${token}`
         }
