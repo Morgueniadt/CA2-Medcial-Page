@@ -30,7 +30,7 @@ export default function CreatePatient() {
   const createPatient = async () => {
     const options = {
       method: "POST",
-      url: `https://ca2-med-api.vercel.app/perscriptions`,
+      url: `https://ca2-med-api.vercel.app/prescriptions`,
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -39,9 +39,9 @@ export default function CreatePatient() {
 
     try {
       const response = await axios.request(options);
-      navigate('/perscriptions');
+      navigate('/prescriptions');
     } catch (err) {
-      console.log("Create perscription error:", err);
+      console.log("Create prescription error:", err);
     }
   };
 

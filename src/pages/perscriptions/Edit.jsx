@@ -21,25 +21,25 @@ export default function EditPatient() {
     const fetchPatient = async () => {
       const options = {
         method: "GET",
-        url: `https://ca2-med-api.vercel.app/perscriptions/${id}`,
+        url: `https://ca2-med-api.vercel.app/prescriptions/${id}`,
         headers: { Authorization: `Bearer ${token}` }
       };
 
       try {
         const response = await axios.request(options);
-        const perscription = response.data;
+        const prescription = response.data;
 
         setForm({
-          patient_id: perscription.patient_id,
-          doctor_id: perscription.doctor_id,
-          diagnosis_id: perscription.diagnosis_id,
-          medication: perscription.medication,
-          dosage: perscription.dosage,
-          start_date: perscription.start_date,
-          end_date: perscription.end_date
+          patient_id: prescription.patient_id,
+          doctor_id: prescription.doctor_id,
+          diagnosis_id: prescription.diagnosis_id,
+          medication: prescription.medication,
+          dosage: prescription.dosage,
+          start_date: prescription.start_date,
+          end_date: prescription.end_date
         });
       } catch (err) {
-        console.log("Fetch perscription error:", err);
+        console.log("Fetch prescription error:", err);
       }
     };
 
@@ -56,16 +56,16 @@ export default function EditPatient() {
   const updatePatient = async () => {
     const options = {
       method: "PATCH",
-      url: `https://ca2-med-api.vercel.app/perscriptions/${id}`,
+      url: `https://ca2-med-api.vercel.app/prescriptions/${id}`,
       headers: { Authorization: `Bearer ${token}` },
       data: form
     };
 
     try {
       await axios.request(options);
-      navigate("/perscriptions");
+      navigate("/prescriptions");
     } catch (err) {
-      console.log("Update perscription error:", err);
+      console.log("Update prescription error:", err);
     }
   };
 

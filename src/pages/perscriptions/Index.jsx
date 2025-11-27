@@ -8,15 +8,15 @@ import {
 } from "@/components/ui/table";
 
 export default function PatientsIndex() {
-  const [perscriptions, setPatients] = useState([]);
+  const [prescriptions, setPatients] = useState([]);
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get("https://ca2-med-api.vercel.app/perscriptions");
+        const res = await axios.get("https://ca2-med-api.vercel.app/prescriptions");
         setPatients(res.data);
       } catch (err) {
-        console.log("Fetch perscriptions error:", err);
+        console.log("Fetch prescriptions error:", err);
       }
     };
 
@@ -26,7 +26,7 @@ export default function PatientsIndex() {
   return (
     <>
       <Button asChild variant="outline" className="mb-4 block">
-        <Link to="/perscriptions/create">Create New Patient</Link>
+        <Link to="/prescriptions/create">Create New Patient</Link>
       </Button>
 
       <Table>
@@ -44,20 +44,20 @@ export default function PatientsIndex() {
         </TableHeader>
 
         <TableBody>
-          {perscriptions.map((perscription) => (
-            <TableRow key={perscription.id}>
-              <TableCell>{perscription.patient_id}</TableCell>
-              <TableCell>{perscription.doctor_id}</TableCell>
-              <TableCell>{perscription.diagnosis_id}</TableCell>
-              <TableCell>{perscription.medication}</TableCell>
-              <TableCell>{perscription.dosage}</TableCell>
-              <TableCell>{perscription.start_date}</TableCell>
-              <TableCell>{perscription.end_date}</TableCell>
+          {prescriptions.map((prescription) => (
+            <TableRow key={prescription.id}>
+              <TableCell>{prescription.patient_id}</TableCell>
+              <TableCell>{prescription.doctor_id}</TableCell>
+              <TableCell>{prescription.diagnosis_id}</TableCell>
+              <TableCell>{prescription.medication}</TableCell>
+              <TableCell>{prescription.dosage}</TableCell>
+              <TableCell>{prescription.start_date}</TableCell>
+              <TableCell>{prescription.end_date}</TableCell>
 
               <TableCell>
-                <Link className="text-blue-500" to={`/perscriptions/${perscription.id}`}>View</Link>
+                <Link className="text-blue-500" to={`/prescriptions/${prescription.id}`}>View</Link>
                 {" | "}
-                <Link className="text-green-500" to={`/perscriptions/${perscription.id}/edit`}>Edit</Link>
+                <Link className="text-green-500" to={`/prescriptions/${prescription.id}/edit`}>Edit</Link>
               </TableCell>
 
             </TableRow>
