@@ -29,10 +29,10 @@ import PatientsShow from '@/pages/patients/Show';
 import PatientsCreate from '@/pages/patients/Create';
 import PatientsEdit from '@/pages/patients/Edit';
 
-import PerscriptionsIndex from '@/pages/perscriptions/Index';
-import PerscriptionsShow from '@/pages/perscriptions/Show';
-import PerscriptionsCreate from '@/pages/perscriptions/Create';
-import PerscriptionsEdit from '@/pages/perscriptions/Edit';
+import PrescriptionsIndex from '@/pages/prescriptions/Index';
+import PrescriptionsShow from '@/pages/prescriptions/Show';
+import PrescriptionsCreate from '@/pages/prescriptions/Create';
+import PrescriptionsEdit from '@/pages/prescriptions/Edit';
  
  
 export default function App() {
@@ -129,17 +129,17 @@ export default function App() {
                     element={<AppointmentsEdit />}
                   />
                   <Route path="/appointments/create" element={<AppointmentsCreate />} />
-                  // Perscriptions Routes
-                  <Route path="/perscriptions" element={<PerscriptionsIndex />} />
+                  // Prescriptions Routes
+                  <Route path="/prescriptions" element={<PrescriptionsIndex />} />
                   <Route
-                    path="/perscriptions/:id"
-                    element={<PerscriptionsShow loggedIn={loggedIn} />}
+                    path="/prescriptions/:id"
+                    element={<PrescriptionsShow loggedIn={loggedIn} />}
                   />
                   <Route
-                    path="/perscriptions/:id/edit"
-                    element={<PerscriptionsEdit />}
+                    path="/prescriptions/:id/edit"
+                    element={<PrescriptionsEdit />}
                   />
-                  <Route path="/perscriptions/create" element={<PerscriptionsCreate />} />  
+                  <Route path="/prescriptions/create" element={<PrescriptionsCreate />} />  
                   // diagnoses Routes
                   <Route path="/diagnosis" element={<DiagnosisIndex />} />
                   <Route
