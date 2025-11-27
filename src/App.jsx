@@ -8,31 +8,11 @@ import { SiteHeader } from '@/components/site-header';
  
 import Navbar from '@/components/Navbar';
 import Home from '@/pages/Home';
- 
-import AppointmentsIndex from '@/pages/appointments/Index';
-import AppointmentsShow from '@/pages/appointments/Show';
-import AppointmentsCreate from '@/pages/appointments/Create';
-import AppointmentsEdit from '@/pages/appointments/Edit';
 
-import DoctorsIndex from '@/pages/doctors/Index';
-import DoctorsShow from '@/pages/doctors/Show';
-import DoctorsCreate from '@/pages/doctors/Create';
-import DoctorsEdit from '@/pages/doctors/Edit';
- 
-import DiagnosisIndex from '@/pages/diagnosis/Index';
-import DiagnosisShow from '@/pages/diagnosis/Show';
-import DiagnosisCreate from '@/pages/diagnosis/Create';
-import DiagnosisEdit from '@/pages/diagnosis/Edit';
-
-import PatientsIndex from '@/pages/patients/Index';
-import PatientsShow from '@/pages/patients/Show';
-import PatientsCreate from '@/pages/patients/Create';
-import PatientsEdit from '@/pages/patients/Edit';
-
-import PrescriptionsIndex from '@/pages/prescriptions/Index';
-import PrescriptionsShow from '@/pages/prescriptions/Show';
-import PrescriptionsCreate from '@/pages/prescriptions/Create';
-import PrescriptionsEdit from '@/pages/prescriptions/Edit';
+import CRUDList from "@/pages/CRUDList";
+import CRUDShow from "@/pages/CRUDShow";
+import CRUDForm from "@/pages/CRUDForm";
+import { resources } from "@/config/resources";
  
  
 export default function App() {
@@ -90,68 +70,20 @@ export default function App() {
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 mx-6">
                 {/* Main content */}
-                <Routes>
-                  <Route
-                    path="/"
-                    element={<Home onLogin={onLogin} loggedIn={loggedIn} />}
-                  />
-                  // Doctors Routes
-                  <Route path="/doctors" element={<DoctorsIndex />} />
-                  <Route
-                    path="/doctors/:id"
-                    element={<DoctorsShow loggedIn={loggedIn} />}
-                  />
-                  <Route
-                    path="/doctors/:id/edit"
-                    element={<DoctorsEdit />}
-                  />
-                  <Route path="/doctors/create" element={<DoctorsCreate />} />
-                 
-                  // Patients Routes
-                  <Route path="/patients" element={<PatientsIndex />} />
-                  <Route
-                    path="/patients/:id"
-                    element={<PatientsShow loggedIn={loggedIn} />}
-                  />
-                  <Route
-                    path="/patients/:id/edit"
-                    element={<PatientsEdit />}
-                  />
-                  <Route path="/patients/create" element={<PatientsCreate />} />
-                  // Appointments Routes
-                  <Route path="/appointments" element={<AppointmentsIndex />} />
-                  <Route
-                    path="/appointments/:id"
-                    element={<AppointmentsShow loggedIn={loggedIn} />}
-                  />
-                  <Route
-                    path="/appointments/:id/edit"
-                    element={<AppointmentsEdit />}
-                  />
-                  <Route path="/appointments/create" element={<AppointmentsCreate />} />
-                  // Prescriptions Routes
-                  <Route path="/prescriptions" element={<PrescriptionsIndex />} />
-                  <Route
-                    path="/prescriptions/:id"
-                    element={<PrescriptionsShow loggedIn={loggedIn} />}
-                  />
-                  <Route
-                    path="/prescriptions/:id/edit"
-                    element={<PrescriptionsEdit />}
-                  />
-                  <Route path="/prescriptions/create" element={<PrescriptionsCreate />} />  
-                  // diagnoses Routes
-                  <Route path="/diagnosis" element={<DiagnosisIndex />} />
-                  <Route
-                    path="/diagnosis/:id"
-                    element={<DiagnosisShow loggedIn={loggedIn} />}
-                  />
-                  <Route
-                    path="/diagnosis/:id/edit"
-                    element={<DiagnosisEdit />}
-                  />
-                  <Route path="/diagnosis/create" element={<DiagnosisCreate />} />
-                </Routes>
+               <Routes>
+  <Route
+    path="/"
+    element={<Home onLogin={onLogin} loggedIn={loggedIn} />}
+  />
+
+  <Route path="/:resource">
+    <Route index element={<CRUDList resources={resources} />} />
+    <Route path="create" element={<CRUDForm resources={resources} />} />
+    <Route path=":id" element={<CRUDShow resources={resources} />} />
+    <Route path=":id/edit" element={<CRUDForm resources={resources} />} />
+  </Route>
+</Routes>
+
               </div>
             </div>
           </div>
