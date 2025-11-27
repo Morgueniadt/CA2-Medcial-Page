@@ -1,13 +1,14 @@
 import * as React from "react"
 import {
-  IconConfetti,
   IconTheater,
   IconDashboard,
   IconMicrophone2,
   IconInnerShadowTop,
   IconMusic,
+  IconHospital,
+  IconStethoscope,
 } from "@tabler/icons-react"
-
+ 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -19,7 +20,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+ 
 const data = {
   user: {
     name: "shadcn",
@@ -35,26 +36,31 @@ const data = {
     {
       title: "Doctors",
       url: "/doctors",
-      icon: IconConfetti,
+      icon: IconHospital,
     },
     {
-      title: "Stages",
-      url: "#",
+      title: "Patients",
+      url: "/patients",
+      icon: IconStethoscope,
+    },
+    {
+      title: "appointments",
+      url: "/appointments",
       icon: IconTheater,
     },
     {
-      title: "Performers",
-      url: "#",
+      title: "persriptions",
+      url: "/prescriptions",
       icon: IconMicrophone2,
     },
     {
-      title: "Shows",
-      url: "#",
+      title: "diagnosis",
+      url: "/diagnosis",
       icon: IconMusic,
     },
   ]
 }
-
+ 
 export function AppSidebar({
   onLogin,
   loggedIn,
@@ -83,3 +89,4 @@ export function AppSidebar({
     </Sidebar>
   );
 }
+ 
