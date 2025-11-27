@@ -1,35 +1,40 @@
 import { useState, useEffect} from 'react';
-
+ 
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-
+ 
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SiteHeader } from '@/components/site-header';
-
+ 
 import Navbar from '@/components/Navbar';
 import Home from '@/pages/Home';
-
-import FestivalsIndex from '@/pages/doctors/Index';
-import FestivalsShow from '@/pages/doctors/Show';
-import FestivalsCreate from '@/pages/doctors/Create';
-import FestivalsEdit from '@/pages/doctors/Edit';
-
-
+ 
+import DoctorsIndex from '@/pages/doctors/Index';
+import DoctorsShow from '@/pages/doctors/Show';
+import DoctorsCreate from '@/pages/doctors/Create';
+import DoctorsEdit from '@/pages/doctors/Edit';
+ 
+import PatientsIndex from '@/pages/patients/Index';
+import PatientsShow from '@/pages/patients/Show';
+import PatientsCreate from '@/pages/patients/Create';
+import PatientsEdit from '@/pages/patients/Edit';
+ 
+ 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-
+ 
   useEffect(() => {
     let token = localStorage.getItem("token");
-
+ 
     if(token){
       setLoggedIn(true);
     }
-
+ 
   }, []);
-
+ 
   const onLogin = (auth, token) => {
     setLoggedIn(auth);
-
+ 
     if(auth){
       localStorage.setItem('token', token)
     }
@@ -37,22 +42,22 @@ export default function App() {
       localStorage.removeItem('token');
     }
   };
-
+ 
   // return (
   //   <>
   //     <Router>
   //       <Navbar onLogin={onLogin} loggedIn={loggedIn} />
   //       <Routes>
   //         <Route path='/' element={<Home onLogin={onLogin} loggedIn={loggedIn} />} />
-
+ 
   //         <Route path="/doctors" element={<FestivalsIndex />} />
   //         <Route path="/doctors/:id" element={<FestivalsShow loggedIn={loggedIn} />} />
-
+ 
   //       </Routes>
   //     </Router>
   //   </>
   // )
-
+ 
   return (
     <Router>
       <SidebarProvider
@@ -65,7 +70,7 @@ export default function App() {
         <SidebarInset>
           <SiteHeader />
           {/* <Navbar onLogin={onLogin} loggedIn={loggedIn} /> */}
-
+ 
           <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 mx-6">
@@ -75,17 +80,29 @@ export default function App() {
                     path="/"
                     element={<Home onLogin={onLogin} loggedIn={loggedIn} />}
                   />
-
-                  <Route path="/doctors" element={<FestivalsIndex />} />
+                  // Doctors Routes
+                  <Route path="/doctors" element={<DoctorsIndex />} />
                   <Route
                     path="/doctors/:id"
-                    element={<FestivalsShow loggedIn={loggedIn} />}
+                    element={<DoctorsShow loggedIn={loggedIn} />}
                   />
                   <Route
                     path="/doctors/:id/edit"
-                    element={<FestivalsEdit />}
+                    element={<DoctorsEdit />}
                   />
-                  <Route path="/doctors/create" element={<FestivalsCreate />} />
+                  <Route path="/doctors/create" element={<DoctorsCreate />} />
+                 
+                  // Patients Routes
+                  <Route path="/patients" element={<PatientsIndex />} />
+                  <Route
+                    path="/patients/:id"
+                    element={<PatientsShow loggedIn={loggedIn} />}
+                  />
+                  <Route
+                    path="/patients/:id/edit"
+                    element={<PatientsEdit />}
+                  />
+                  <Route path="/patients/create" element={<PatientsCreate />} />
                 </Routes>
               </div>
             </div>
