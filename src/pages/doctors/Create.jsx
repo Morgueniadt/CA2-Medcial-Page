@@ -1,103 +1,97 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import axios from 'axios';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
 
-export default function Create() {
-    const [form, setForm] = useState({
-        title: "",
-        description: "",
-        city: "",
-        start_date: "",
-        end_date: ""
+export default function CreatePatient() {
+
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    date_of_birth: "",
+    email: "",
+    phone: ""
+  });
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
     });
-    const navigate = useNavigate();
+  };
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name] : e.target.value
-        });
+  const createPatient = async () => {
+    const options = {
+      method: "POST",
+      url: `https://ca2-med-api.vercel.app/patients`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      data: form
     };
 
-    const createFestival = async () => {
-        const token = localStorage.getItem("token");
+    try {
+      const response = await axios.request(options);
+      navigate('/patients');
+    } catch (err) {
+      console.log("Create patient error:", err);
+    }
+  };
 
-        const options = {
-            method: "POST",
-            url: `https://doctors-api.vercel.app/doctors`,
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            data: form
-        };
-
-        try {
-            let response = await axios.request(options);
-            console.log(response.data);
-            navigate('/doctors');
-        } catch (err) {
-            console.log(err);
-        }
-
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(form);
-        createFestival();
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createPatient();
+  };
 
   return (
     <>
-        <h1>Create a new Festival</h1>
-        <form onSubmit={handleSubmit}>
-            <Input 
-                type="text" 
-                placeholder="Title" 
-                name="title" 
-                value={form.title} 
-                onChange={handleChange} 
-            />
-            <Input 
-                className="mt-2"
-                type="text" 
-                placeholder="Description" 
-                name="description" 
-                value={form.description} 
-                onChange={handleChange} 
-            />
-            <Input 
-                className="mt-2"
-                type="text" 
-                placeholder="City" 
-                name="city" 
-                value={form.city} 
-                onChange={handleChange} 
-            />
-            <Input 
-                className="mt-2"
-                type="text" 
-                placeholder="Start Date" 
-                name="start_date" 
-                value={form.start_date} 
-                onChange={handleChange} 
-            />
-            <Input 
-                className="mt-2"
-                type="text" 
-                placeholder="End Date" 
-                name="end_date" 
-                value={form.end_date} 
-                onChange={handleChange} 
-            />
-            <Button 
-                className="mt-4 cursor-pointer" 
-                variant="outline" 
-                type="submit" 
-            >Submit</Button>
-        </form>
+      <h1 className="text-xl font-semibold mb-4">Create New Patient</h1>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        
+        <Input
+          name="first_name"
+          placeholder="First Name"
+          value={form.first_name}
+          onChange={handleChange}
+        />
+
+        <Input
+          name="last_name"
+          placeholder="Last Name"
+          value={form.last_name}
+          onChange={handleChange}
+        />
+
+        <Input
+          name="date of birth"
+          placeholder="Date of Birth"
+          value={form.date_of_birth}
+          onChange={handleChange}
+        />
+
+        <Input
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+        />
+
+        <Input
+          name="phone"
+          placeholder="Phone"
+          value={form.phone}
+          onChange={handleChange}
+        />
+
+        <Button className="mt-4" type="submit" variant="outline">
+          Create Patient
+        </Button>
+      </form>
     </>
   );
 }

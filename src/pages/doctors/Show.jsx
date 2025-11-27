@@ -1,34 +1,39 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
-export default function Show() {
-  const [festival, setFestival] = useState([]);
+export default function ShowDoctor() {
   const { id } = useParams();
-
-  let token = localStorage.getItem('token');
+  const [doctor, setDoctor] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchFestival = async () => {
-      const options = {
-        method: "GET",
-        url: `https://doctors-api.vercel.app/doctors/${id}`,
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-      };
-
+    const fetchDoctor = async () => {
       try {
-        let response = await axios.request(options);
-        console.log(response.data);
-        setFestival(response.data);
+        const res = await axios.get(
+          `https://ca2-med-api.vercel.app/doctors/${id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setDoctor(res.data);
       } catch (err) {
-        console.log(err);
+        console.log("Fetch doctor error:", err);
       }
     };
 
-    fetchFestival();
-  }, []);
+    fetchDoctor();
+  }, [id]);
 
-  return <>Show festival</>;
+  if (!doctor) return <p>Loading...</p>;
+
+  return (
+    <>
+      <h1 className="text-xl font-bold mb-4">Doctor Details</h1>
+
+      <p><strong>First Name:</strong> {doctor.first_name}</p>
+      <p><strong>Last Name:</strong> {doctor.last_name}</p>
+      <p><strong>Specialisation:</strong> {doctor.specialisation}</p>
+      <p><strong>Email:</strong> {doctor.email}</p>
+      <p><strong>Phone:</strong> {doctor.phone}</p>
+    </>
+  );
 }

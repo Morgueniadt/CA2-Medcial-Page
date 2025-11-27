@@ -1,132 +1,91 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { useParams } from "react-router";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useParams, useNavigate } from "react-router";
 
-export default function Edit() {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    city: "",
-    start_date: "",
-    end_date: "",
-  });
-
+export default function EditDoctor() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    specialisation: "",
+    email: "",
+    phone: ""
+  });
+
   useEffect(() => {
-    const fetchFestival = async () => {
+    const fetchDoctor = async () => {
       const options = {
         method: "GET",
-        url: `https://doctors-api.vercel.app/doctors/${id}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        url: `https://ca2-med-api.vercel.app/doctors/${id}`,
+        headers: { Authorization: `Bearer ${token}` }
       };
 
       try {
-        let response = await axios.request(options);
-        console.log(response.data);
-        let festival = response.data;
+        const response = await axios.request(options);
+        const doctor = response.data;
+
         setForm({
-            title: festival.title,
-            description: festival.description,
-            city: festival.city,
-            start_date: festival.start_date,
-            end_date: festival.end_date,
+          first_name: doctor.first_name,
+          last_name: doctor.last_name,
+          specialisation: doctor.specialisation,
+          email: doctor.email,
+          phone: doctor.phone
         });
       } catch (err) {
-        console.log(err);
+        console.log("Fetch doctor error:", err);
       }
     };
 
-    fetchFestival();
-  }, []);
-
-  const navigate = useNavigate();
-  const { id } = useParams();
+    fetchDoctor();
+  }, [id]);
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
-  const updateFestival = async () => {
-    
-
+  const updateDoctor = async () => {
     const options = {
       method: "PATCH",
-      url: `https://doctors-api.vercel.app/doctors/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: form,
+      url: `https://ca2-med-api.vercel.app/doctors/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: form
     };
 
     try {
-      let response = await axios.request(options);
-      console.log(response.data);
+      await axios.request(options);
       navigate("/doctors");
     } catch (err) {
-      console.log(err);
+      console.log("Update doctor error:", err);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
-    updateFestival();
+    updateDoctor();
   };
 
   return (
     <>
-      <h1>Update Festival</h1>
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="Title"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-        />
-        <Input
-          className="mt-2"
-          type="text"
-          placeholder="Description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-        />
-        <Input
-          className="mt-2"
-          type="text"
-          placeholder="City"
-          name="city"
-          value={form.city}
-          onChange={handleChange}
-        />
-        <Input
-          className="mt-2"
-          type="text"
-          placeholder="Start Date"
-          name="start_date"
-          value={form.start_date}
-          onChange={handleChange}
-        />
-        <Input
-          className="mt-2"
-          type="text"
-          placeholder="End Date"
-          name="end_date"
-          value={form.end_date}
-          onChange={handleChange}
-        />
-        <Button className="mt-4 cursor-pointer" variant="outline" type="submit">
-          Submit
+      <h1 className="text-xl font-semibold mb-4">Edit Doctor</h1>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
+        <Input name="first_name" value={form.first_name} onChange={handleChange} placeholder="First Name" />
+        <Input name="last_name" value={form.last_name} onChange={handleChange} placeholder="Last Name" />
+        <Input name="specialisation" value={form.specialisation} onChange={handleChange} placeholder="Specialisation" />
+        <Input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
+        <Input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" />
+
+        <Button className="mt-4" type="submit" variant="outline">
+          Save Changes
         </Button>
       </form>
     </>

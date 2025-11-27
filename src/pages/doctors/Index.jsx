@@ -2,101 +2,64 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableHeader, TableRow, TableHead,
+  TableBody, TableCell
 } from "@/components/ui/table";
 
-// import {
-//   Card,
-//   CardAction,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-
-export default function Index() {
-  const [doctors, setFestivals] = useState([]);
+export default function DoctorsIndex() {
+  const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    const fetchFestivals = async () => {
-      const options = {
-        method: "GET",
-        url: "https://doctors-api.vercel.app/doctors",
-      };
-
+    const fetchDoctors = async () => {
       try {
-        let response = await axios.request(options);
-        console.log(response.data);
-        setFestivals(response.data);
+        const res = await axios.get("https://ca2-med-api.vercel.app/doctors");
+        setDoctors(res.data);
       } catch (err) {
-        console.log(err);
+        console.log("Fetch doctors error:", err);
       }
     };
 
-    fetchFestivals();
+    fetchDoctors();
   }, []);
-
-  // const festivalCards = doctors.map((festival) => {
-  //   return (
-  //     <Card key={festival.id}>
-  //       <CardHeader>
-  //         <CardTitle>{festival.title}</CardTitle>
-  //         <CardDescription>{festival.description}</CardDescription>
-  //         {/* <CardAction>Card Action</CardAction> */}
-  //       </CardHeader>
-  //       {/* <CardContent>
-  //         <p>Card Content</p>
-  //       </CardContent> */}
-  //       <CardFooter>
-  //         <Button
-  //           asChild
-  //           variant='outline'
-  //         ><Link size='md' to={`/doctors/${festival.id}`}>View</Link></Button>
-  //       </CardFooter>
-  //     </Card>
-  //   );
-  // });
 
   return (
     <>
-      <Button
-        asChild
-        variant='outline'
-        className='mb-4 mr-auto block'
-      ><Link size='sm' to={`/doctors/create`}>Create New Festival</Link>
+      <Button asChild variant="outline" className="mb-4 block">
+        <Link to="/doctors/create">Create New Doctor</Link>
       </Button>
 
-
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Title</TableHead>
-          <TableHead>City</TableHead>
-          <TableHead>Start Date</TableHead>
-          <TableHead>End Date</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {doctors.map((festival) => (
-          <TableRow key={festival.id}>
-            <TableCell>{festival.title}</TableCell>
-            <TableCell>{festival.city}</TableCell>
-            <TableCell>{festival.start_date}</TableCell>
-            <TableCell>{festival.end_date}</TableCell>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>First Name</TableHead>
+            <TableHead>Last Name</TableHead>
+            <TableHead>Specialisation</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Phone</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+
+        <TableBody>
+          {doctors.map((doctor) => (
+            <TableRow key={doctor.id}>
+              <TableCell>{doctor.first_name}</TableCell>
+              <TableCell>{doctor.last_name}</TableCell>
+              <TableCell>{doctor.specialisation}</TableCell>
+              <TableCell>{doctor.email}</TableCell>
+              <TableCell>{doctor.phone}</TableCell>
+
+              <TableCell>
+                <Link className="text-blue-500" to={`/doctors/${doctor.id}`}>View</Link>
+                {" | "}
+                <Link className="text-green-500" to={`/doctors/${doctor.id}/edit`}>Edit</Link>
+              </TableCell>
+
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </>
   );
 }
