@@ -9,15 +9,30 @@ import { SiteHeader } from '@/components/site-header';
 import Navbar from '@/components/Navbar';
 import Home from '@/pages/Home';
  
+import AppointmentsIndex from '@/pages/appointments/Index';
+import AppointmentsShow from '@/pages/appointments/Show';
+import AppointmentsCreate from '@/pages/appointments/Create';
+import AppointmentsEdit from '@/pages/appointments/Edit';
+
 import DoctorsIndex from '@/pages/doctors/Index';
 import DoctorsShow from '@/pages/doctors/Show';
 import DoctorsCreate from '@/pages/doctors/Create';
 import DoctorsEdit from '@/pages/doctors/Edit';
  
+import DiagnosisIndex from '@/pages/diagnosis/Index';
+import DiagnosisShow from '@/pages/diagnosis/Show';
+import DiagnosisCreate from '@/pages/diagnosis/Create';
+import DiagnosisEdit from '@/pages/diagnosis/Edit';
+
 import PatientsIndex from '@/pages/patients/Index';
 import PatientsShow from '@/pages/patients/Show';
 import PatientsCreate from '@/pages/patients/Create';
 import PatientsEdit from '@/pages/patients/Edit';
+
+import PerscriptionsIndex from '@/pages/perscriptions/Index';
+import PerscriptionsShow from '@/pages/perscriptions/Show';
+import PerscriptionsCreate from '@/pages/perscriptions/Create';
+import PerscriptionsEdit from '@/pages/perscriptions/Edit';
  
  
 export default function App() {
@@ -103,6 +118,39 @@ export default function App() {
                     element={<PatientsEdit />}
                   />
                   <Route path="/patients/create" element={<PatientsCreate />} />
+                  // Appointments Routes
+                  <Route path="/appointments" element={<AppointmentsIndex />} />
+                  <Route
+                    path="/appointments/:id"
+                    element={<AppointmentsShow loggedIn={loggedIn} />}
+                  />
+                  <Route
+                    path="/appointments/:id/edit"
+                    element={<AppointmentsEdit />}
+                  />
+                  <Route path="/appointments/create" element={<AppointmentsCreate />} />
+                  // Perscriptions Routes
+                  <Route path="/perscriptions" element={<PerscriptionsIndex />} />
+                  <Route
+                    path="/perscriptions/:id"
+                    element={<PerscriptionsShow loggedIn={loggedIn} />}
+                  />
+                  <Route
+                    path="/perscriptions/:id/edit"
+                    element={<PerscriptionsEdit />}
+                  />
+                  <Route path="/perscriptions/create" element={<PerscriptionsCreate />} />  
+                  // diagnoses Routes
+                  <Route path="/diagnosis" element={<DiagnosisIndex />} />
+                  <Route
+                    path="/diagnosis/:id"
+                    element={<DiagnosisShow loggedIn={loggedIn} />}
+                  />
+                  <Route
+                    path="/diagnosis/:id/edit"
+                    element={<DiagnosisEdit />}
+                  />
+                  <Route path="/diagnosis/create" element={<DiagnosisCreate />} />
                 </Routes>
               </div>
             </div>
