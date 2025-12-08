@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router";
+import { Link, useParams  } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "@/hooks/useAuth"; // Assuming your AuthContext
 
 export default function CRUDShow({ resources }) {
   const { resource, id } = useParams();
   const config = resources[resource];
-
+  const { token } = useAuth(); // get token
   const [item, setItem] = useState(null);
 
   useEffect(() => {
-    axios.get(`${config.endpoint}/${id}`).then(res => setItem(res.data));
-  }, [resource, id]);
+    axios.get(`${config.endpoint}/${id}`, {
+      headers: { Authorization: `Bearer ${token}` } // optional for protected API
+    }).then(res => setItem(res.data));
+  }, [resource, id, token]);
 
   if (!item) return <p>Loading...</p>;
 
@@ -26,12 +29,15 @@ export default function CRUDShow({ resources }) {
         ))}
       </div>
 
-      <Link
-        to={`/${resource}/${id}/edit`}
-        className="px-4 py-2 mt-4 inline-block bg-green-600 text-white rounded"
-      >
-        Edit
-      </Link>
+      {/* Only render the edit button if the user is admin */}
+      {token && (
+        <Link
+          to={`/${resource}/${id}/edit`}
+          className="px-4 py-2 mt-4 inline-block bg-green-600 text-white rounded"
+        >
+          Edit
+        </Link>
+      )}
     </>
   );
 }

@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useParams, Link } from "react-router-dom"; // ✅ correct import
 import axios from "axios";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function CRUDList({ resources }) {
   const { resource } = useParams();
   const config = resources[resource];
 
+  if (!config) return <p>You do not have access to these pages: {resource}</p>; // Prevent crash
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
     axios.get(config.endpoint).then(res => setData(res.data));
-  }, [resource]);
+  }, [config.endpoint]);
 
   return (
     <>
       <h1 className="text-2xl font-semibold">{config.label}</h1>
 
-      <Link
-        to={`/${resource}/create`}
-        className="px-4 py-2 bg-blue-600 text-white rounded"
-      >
+      <Link to={`/${resource}/create`} className="px-4 py-2 bg-blue-600 text-white rounded">
         Create New {config.label}
       </Link>
 
@@ -37,19 +37,11 @@ export default function CRUDList({ resources }) {
           {data.map(item => (
             <tr key={item.id}>
               {config.fields.map(f => (
-                <td key={f.name} className="border p-2">
-                  {item[f.name]}
-                </td>
+                <td key={f.name} className="border p-2">{item[f.name]}</td>
               ))}
-
               <td className="border p-2">
-                <Link className="text-blue-500" to={`/${resource}/${item.id}`}>
-                  View
-                </Link>
-                {" | "}
-                <Link className="text-green-500" to={`/${resource}/${item.id}/edit`}>
-                  Edit
-                </Link>
+                <Link className="text-blue-500" to={`/${resource}/${item.id}`}>View</Link> | 
+                <Link className="text-green-500" to={`/${resource}/${item.id}/edit`}>Edit</Link>
               </td>
             </tr>
           ))}

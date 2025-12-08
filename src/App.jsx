@@ -1,58 +1,31 @@
-import { useState, useEffect} from 'react';
- 
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
- 
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
-import { SiteHeader } from '@/components/site-header';
- 
-import Navbar from '@/components/Navbar';
-import Home from '@/pages/Home';
 
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+
+import Home from "@/pages/Home";
+import ProtectedRoute from "@/pages/ProtectedRoutes";
 import CRUDList from "@/pages/CRUDList";
 import CRUDShow from "@/pages/CRUDShow";
 import CRUDForm from "@/pages/CRUDForm";
 import { resources } from "@/config/resources";
- 
- 
+
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
- 
+
   useEffect(() => {
     let token = localStorage.getItem("token");
- 
-    if(token){
-      setLoggedIn(true);
-    }
- 
+    if (token) setLoggedIn(true);
   }, []);
- 
+
   const onLogin = (auth, token) => {
     setLoggedIn(auth);
- 
-    if(auth){
-      localStorage.setItem('token', token)
-    }
-    else {
-      localStorage.removeItem('token');
-    }
+    if (auth) localStorage.setItem("token", token);
+    else localStorage.removeItem("token");
   };
- 
-  // return (
-  //   <>
-  //     <Router>
-  //       <Navbar onLogin={onLogin} loggedIn={loggedIn} />
-  //       <Routes>
-  //         <Route path='/' element={<Home onLogin={onLogin} loggedIn={loggedIn} />} />
- 
-  //         <Route path="/doctors" element={<FestivalsIndex />} />
-  //         <Route path="/doctors/:id" element={<FestivalsShow loggedIn={loggedIn} />} />
- 
-  //       </Routes>
-  //     </Router>
-  //   </>
-  // )
- 
+
   return (
     <Router>
       <SidebarProvider
@@ -64,26 +37,28 @@ export default function App() {
         <AppSidebar variant="inset" loggedIn={loggedIn} onLogin={onLogin} />
         <SidebarInset>
           <SiteHeader />
-          {/* <Navbar onLogin={onLogin} loggedIn={loggedIn} /> */}
- 
+
           <div className="flex flex-1 flex-col">
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 mx-6">
-                {/* Main content */}
-               <Routes>
-  <Route
-    path="/"
-    element={<Home onLogin={onLogin} loggedIn={loggedIn} />}
-  />
+                <Routes>
+                  {/* Public Home route */}
+                  <Route path="/" element={<Home onLogin={onLogin} loggedIn={loggedIn} />} />
 
-  <Route path="/:resource">
-    <Route index element={<CRUDList resources={resources} />} />
-    <Route path="create" element={<CRUDForm resources={resources} />} />
-    <Route path=":id" element={<CRUDShow resources={resources} />} />
-    <Route path=":id/edit" element={<CRUDForm resources={resources} />} />
-  </Route>
-</Routes>
+                  {/* Resource routes */}
+                  <Route path="/:resource">
+                    <Route index element={<CRUDList resources={resources} />} />
 
+                    {/* Admin-only routes */}
+                    <Route element={<ProtectedRoute adminOnly={true} />}>
+                      <Route path="create" element={<CRUDForm resources={resources} />} />
+                      <Route path=":id/edit" element={<CRUDForm resources={resources} />} />
+                    </Route>
+
+                    {/* Everyone can view details */}
+                    <Route path=":id" element={<CRUDShow resources={resources} />} />
+                  </Route>
+                </Routes>
               </div>
             </div>
           </div>

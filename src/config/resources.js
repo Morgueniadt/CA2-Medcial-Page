@@ -5,7 +5,7 @@ export const resources = {
     fields: [
       { name: "first_name", label: "First Name", type: "text" },
       { name: "last_name", label: "Last Name", type: "text" },
-      { name: "dob", label: "Date of Birth", type: "date" }
+      { name: "date_of_birth", label: "Date of Birth", type: "date" }
     ]
   },
 
@@ -15,7 +15,7 @@ export const resources = {
     fields: [
       { name: "first_name", label: "First Name", type: "text" },
       { name: "last_name", label: "Last Name", type: "text" },
-      { name: "specialty", label: "Specialty", type: "text" },
+      { name: "specialisation", label: "Specialisation", type: "text", enumValues: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Psychiatry"] },
       { name: "email", label: "Email", type: "email" },
       { name: "phone", label: "Phone", type: "text" }
     ]
@@ -25,9 +25,9 @@ export const resources = {
     label: "Appointments",
     endpoint: "https://ca2-med-api.vercel.app/appointments",
     fields: [
-      { name: "patient_id", label: "Patient ID", type: "number" },
-      { name: "doctor_id", label: "Doctor ID", type: "number" },
-      { name: "date", label: "Appointment Date", type: "date" }
+      { name: "patient_id", label: "Patient ID", type: "number", apiEndpoint: "https://ca2-med-api.vercel.app/patients" },
+      { name: "doctor_id", label: "Doctor ID", type: "number", apiEndpoint: "https://ca2-med-api.vercel.app/doctors" },
+      { name: "appointment_date", label: "Appointment Date", type: "date" }
     ]
   },
 
@@ -35,8 +35,8 @@ export const resources = {
     label: "Prescriptions",
     endpoint: "https://ca2-med-api.vercel.app/prescriptions",
     fields: [
-      { name: "patient_id", label: "Patient ID", type: "number" },
-      { name: "doctor_id", label: "Doctor ID", type: "number" },
+      { name: "patient_id", label: "Patient ID", type: "number", apiEndpoint: "https://ca2-med-api.vercel.app/patients" },
+      { name: "doctor_id", label: "Doctor ID", type: "number", apiEndpoint: "https://ca2-med-api.vercel.app/doctors" },
       { name: "medication", label: "Medication", type: "text" },
       { name: "dosage", label: "Dosage", type: "text" }
     ]
@@ -46,7 +46,7 @@ export const resources = {
     label: "Diagnosis",
     endpoint: "https://ca2-med-api.vercel.app/diagnosis",
     fields: [
-      { name: "patient_id", label: "Patient ID", type: "number" },
+      { name: "patient_id", label: "Patient ID", type: "number", apiEndpoint: "https://ca2-med-api.vercel.app/patients" },
       { name: "description", label: "Description", type: "text" }
     ]
   }
