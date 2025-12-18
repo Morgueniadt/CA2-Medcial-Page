@@ -1,43 +1,38 @@
 import { useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import axios from "axios";
 
 export default function AuthForm({ onLogin }) {
   const [form, setForm] = useState({});
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState("login"); // 'login' or 'register'
+  const [error, setError] = useState("");
+  const [mode, setMode] = useState("login");
 
-  const adminCredentials = {
-    email: "admin@example.com",
-    password: "admin123",
-    role: "admin",
-  };
+  const adminCredentials = { email: "admin@example.com", password: "admin123", role: "admin" };
 
-  const handleForm = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submitForm = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    // Hardcoded admin
     if (form.email === adminCredentials.email && form.password === adminCredentials.password) {
       onLogin(true, "admin-token", "admin");
       setLoading(false);
       return;
     }
 
-    const endpoint = mode === "login" ? "https://doctors-api.vercel.app/login" : "https://doctors-api.vercel.app/register";
+    const endpoint = mode === "login" ? "/login" : "/register";
 
     try {
-      const response = await axios.post(endpoint, form);
-      const { token, user } = response.data;
+      const res = await axios.post(`https://doctors-api.vercel.app${endpoint}`, form);
+      const { token, user } = res.data;
       if (!["doctor", "patient"].includes(user.role)) {
-        setError("Role not recognized.");
+        setError("Role not recognized");
         setLoading(false);
         return;
       }
@@ -54,41 +49,37 @@ export default function AuthForm({ onLogin }) {
       <Card className="w-full max-w-sm shadow-lg rounded-lg border border-gray-200">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-blue-700 capitalize">{mode}</CardTitle>
-          <CardDescription className="text-gray-500 mt-1">
-            {mode === "login" ? "Enter your credentials to login" : "Fill the form to create an account"}
-          </CardDescription>
+          <CardDescription>{mode === "login" ? "Enter your credentials" : "Fill form to register"}</CardDescription>
         </CardHeader>
 
         <CardContent>
           {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-          <form onSubmit={submitForm} className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={submitForm}>
             {mode === "register" && (
               <div className="flex flex-col">
-                <Label htmlFor="name">Full Name</Label>
-                <Input id="name" name="name" required onChange={handleForm} />
+                <Label>Name</Label>
+                <Input name="name" required onChange={handleChange} />
               </div>
             )}
             <div className="flex flex-col">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required onChange={handleForm} />
+              <Label>Email</Label>
+              <Input name="email" type="email" required onChange={handleChange} />
             </div>
             <div className="flex flex-col">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required onChange={handleForm} />
+              <Label>Password</Label>
+              <Input name="password" type="password" required onChange={handleChange} />
             </div>
             {mode === "register" && (
               <div className="flex flex-col">
-                <Label htmlFor="role">Role</Label>
-                <select name="role" id="role" required onChange={handleForm} className="mt-1 border p-2 rounded">
+                <Label>Role</Label>
+                <select name="role" required onChange={handleChange} className="border p-2 rounded">
                   <option value="">Select role</option>
                   <option value="doctor">Doctor</option>
                   <option value="patient">Patient</option>
                 </select>
               </div>
             )}
-            <Button type="submit" className={`mt-4 w-full ${loading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={loading}>
-              {loading ? `${mode}ing...` : mode === "login" ? "Login" : "Register"}
-            </Button>
+            <Button type="submit" className="mt-4">{loading ? "Processing..." : mode === "login" ? "Login" : "Register"}</Button>
           </form>
         </CardContent>
 
