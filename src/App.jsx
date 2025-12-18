@@ -1,37 +1,53 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import AuthForm from "@/components/AuthForm";
 import DashboardLayout from "@/components/DashboardLayout";
-import AdminPanel from "@/pages/AdminPanel";
+import AdminPanel from "@/pages/Admin/AdminPanel";
 
-import Doctors from "./pages/Doctors";
-import DoctorForm from "./pages/DoctorForm";
-import DoctorShow from "./pages/DoctorShow";
+import Doctors from "./pages/Doctors/Doctors";
+import DoctorForm from "./pages/Doctors/DoctorForm";
+import DoctorShow from "./pages/Doctors/DoctorShow";
 
-import Diagnoses from "./pages/Diagnoses";
-import DiagnosisForm from "./pages/DiagnosisForm";
-import DiagnosisShow from "./pages/DiagnosisShow";
+import Diagnoses from "./pages/Diagnoses/Diagnoses";
+import DiagnosisForm from "./pages/Diagnoses/DiagnosisForm";
+import DiagnosisShow from "./pages/Diagnoses/DiagnosisShow";
 
-import Appointments from "./pages/Appointments";
-import AppointmentsForm from "./pages/AppointmentsForm";
-import AppointmentsShow from "./pages/AppointmentsShow";
+import Appointments from "./pages/Appointments/Appointments";
+import AppointmentsForm from "./pages/Appointments/AppointmentsForm";
+import AppointmentsShow from "./pages/Appointments/AppointmentsShow";
 
-import Prescriptions from "./pages/Prescriptions";
-import PrescriptionsForm from "./pages/PrescriptionsForm";
-import PrescriptionsShow from "./pages/PrescriptionsShow";
+import Prescriptions from "./pages/Prescriptions/Prescriptions";
+import PrescriptionsForm from "./pages/Prescriptions/PrescriptionsForm";
+import PrescriptionsShow from "./pages/Prescriptions/PrescriptionsShow";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState(""); // doctor / patient / admin
   const [token, setToken] = useState("");
 
+  // Persist token & role from localStorage
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    const savedRole = localStorage.getItem("role");
+    if (savedToken && savedRole) {
+      setLoggedIn(true);
+      setToken(savedToken);
+      setRole(savedRole);
+    }
+  }, []);
+
   const handleLogin = (status, tokenValue, userRole) => {
     setLoggedIn(status);
     setRole(userRole);
     setToken(tokenValue);
-    if (status) localStorage.setItem("token", tokenValue);
-    else localStorage.removeItem("token");
+    if (status) {
+      localStorage.setItem("token", tokenValue);
+      localStorage.setItem("role", userRole);
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+    }
   };
 
   const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -46,11 +62,11 @@ export default function App() {
         {/* Public route */}
         <Route path="/login" element={<AuthForm onLogin={handleLogin} />} />
 
-        {/* Dashboard routes */}
+        {/* Protected dashboard routes */}
         <Route
           path="/"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["doctor", "patient", "admin"]}>
               <DashboardLayout role={role} onLogout={() => handleLogin(false)} />
             </ProtectedRoute>
           }
