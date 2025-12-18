@@ -21,6 +21,9 @@ import Prescriptions from "./pages/Prescriptions/Prescriptions";
 import PrescriptionsForm from "./pages/Prescriptions/PrescriptionsForm";
 import PrescriptionsShow from "./pages/Prescriptions/PrescriptionsShow";
 
+import PatientShow from "./pages/PatientShow";
+import PatientForm from "./pages/PatientForm";
+
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState(""); // doctor / patient / admin
@@ -91,7 +94,10 @@ export default function App() {
           <Route path="prescriptions/create" element={<PrescriptionsForm />} />
           <Route path="prescriptions/:id" element={<PrescriptionsShow />} />
           <Route path="prescriptions/:id/edit" element={<PrescriptionsForm />} />
+          <Route path="patients/:id" element={<PatientShow />} />
+          <Route path="patients/:id/edit" element={<PatientForm />} />
 
+          
           {/* Admin-only route */}
           <Route
             path="admin"
