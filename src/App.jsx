@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
-import LoginForm from "@/components/LoginForm";
+import AuthForm from "@/components/AuthForm";
 import DashboardLayout from "@/components/DashboardLayout";
+import AdminPanel from "@/pages/AdminPanel";
 
 import Doctors from "./pages/Doctors";
 import DoctorForm from "./pages/DoctorForm";
@@ -22,17 +23,20 @@ import PrescriptionsShow from "./pages/PrescriptionsShow";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [role, setRole] = useState(""); // doctor / patient / admin
   const [token, setToken] = useState("");
 
-  const handleLogin = (status, tokenValue) => {
+  const handleLogin = (status, tokenValue, userRole) => {
     setLoggedIn(status);
+    setRole(userRole);
     setToken(tokenValue);
     if (status) localStorage.setItem("token", tokenValue);
     else localStorage.removeItem("token");
   };
 
-  const ProtectedRoute = ({ children }) => {
+  const ProtectedRoute = ({ children, allowedRoles }) => {
     if (!loggedIn) return <Navigate to="/login" replace />;
+    if (allowedRoles && !allowedRoles.includes(role)) return <Navigate to="/" replace />;
     return children;
   };
 
@@ -40,14 +44,14 @@ export default function App() {
     <Router>
       <Routes>
         {/* Public route */}
-        <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
+        <Route path="/login" element={<AuthForm onLogin={handleLogin} />} />
 
-        {/* Protected dashboard */}
+        {/* Dashboard routes */}
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <DashboardLayout onLogout={() => handleLogin(false)} />
+              <DashboardLayout role={role} onLogout={() => handleLogin(false)} />
             </ProtectedRoute>
           }
         >
@@ -71,6 +75,16 @@ export default function App() {
           <Route path="prescriptions/create" element={<PrescriptionsForm />} />
           <Route path="prescriptions/:id" element={<PrescriptionsShow />} />
           <Route path="prescriptions/:id/edit" element={<PrescriptionsForm />} />
+
+          {/* Admin-only route */}
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Redirect unknown routes */}
